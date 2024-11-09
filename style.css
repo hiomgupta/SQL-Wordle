@@ -1,0 +1,54 @@
+* {
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+  }
+  
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  
+  .game-container {
+    text-align: center;
+    width: 320px;
+  }
+  
+  .attempt-row input {
+    width: 40px;
+    height: 40px;
+    margin: 5px;
+    text-align: center;
+    font-size: 18px;
+    border: 2px solid #ccc;
+  }
+  
+  .code-snippets button,
+  .controls button {
+    margin: 5px;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  #go-btn {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  #reset-btn {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  #chances-remaining {
+    font-weight: bold;
+  }
+  
+  #message {
+    font-weight: bold;
+    font-size: 1.2em;
+  }
+  
