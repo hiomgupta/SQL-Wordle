@@ -6,178 +6,95 @@
   <title>SQL-Wordle Game</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="flex items-center justify-center h-screen bg-gray-100">
-  <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+<body class="flex-col min-h-screen bg-gray-100">
+  <main class="flex-grow flex items-center justify-center">
+    <div class="bg-white p-6 rounded-lg shadow-lg max-w-full sm:max-w-md w-full">
     <h1 class="text-2xl font-bold text-center mb-4">SQL-Wordle P1.0</h1>
     <p class="text-center mb-6">Fill in the blanks to retrieve all data from the teacher table using code snippets below.</p>
-    
+
     <!-- Attempts Section -->
     <div id="attempts" class="space-y-3 mb-6">
-      <div class="flex space-x-2 justify-center" id="row1">
-        <button class="input-box px-4 py-2 bg-gray-200 rounded" id="input1-1"></button>
-        <button class="input-box px-4 py-2 bg-gray-200 rounded" id="input1-2"></button>
-        <button class="input-box px-4 py-2 bg-gray-200 rounded" id="input1-3"></button>
-        <button class="input-box px-4 py-2 bg-gray-200 rounded" id="input1-4"></button>
-        <button class="input-box px-4 py-2 bg-gray-200 rounded" id="input1-5"></button>
+      <div class="flex space-x-2 justify-center flex-wrap" id="row1">
+        <button class="input-box px-4 py-2 bg-gray-200 rounded mb-2" id="input1-1"></button>
+        <button class="input-box px-4 py-2 bg-gray-200 rounded mb-2" id="input1-2"></button>
+        <button class="input-box px-4 py-2 bg-gray-200 rounded mb-2" id="input1-3"></button>
+        <button class="input-box px-4 py-2 bg-gray-200 rounded mb-2" id="input1-4"></button>
+        <button class="input-box px-4 py-2 bg-gray-200 rounded mb-2" id="input1-5"></button>
       </div>
-      <div class="flex space-x-2 justify-center" id="row2">
-        <button class="input-box px-4 py-2 bg-gray-200 rounded" id="input2-1"></button>
-        <button class="input-box px-4 py-2 bg-gray-200 rounded" id="input2-2"></button>
-        <button class="input-box px-4 py-2 bg-gray-200 rounded" id="input2-3"></button>
-        <button class="input-box px-4 py-2 bg-gray-200 rounded" id="input2-4"></button>
-        <button class="input-box px-4 py-2 bg-gray-200 rounded" id="input2-5"></button>
+      <div class="flex space-x-2 justify-center flex-wrap" id="row2">
+        <button class="input-box px-4 py-2 bg-gray-200 rounded mb-2" id="input2-1"></button>
+        <button class="input-box px-4 py-2 bg-gray-200 rounded mb-2" id="input2-2"></button>
+        <button class="input-box px-4 py-2 bg-gray-200 rounded mb-2" id="input2-3"></button>
+        <button class="input-box px-4 py-2 bg-gray-200 rounded mb-2" id="input2-4"></button>
+        <button class="input-box px-4 py-2 bg-gray-200 rounded mb-2" id="input2-5"></button>
       </div>
-      <div class="flex space-x-2 justify-center" id="row3">
-        <button class="input-box px-4 py-2 bg-gray-200 rounded" id="input3-1"></button>
-        <button class="input-box px-4 py-2 bg-gray-200 rounded" id="input3-2"></button>
-        <button class="input-box px-4 py-2 bg-gray-200 rounded" id="input3-3"></button>
-        <button class="input-box px-4 py-2 bg-gray-200 rounded" id="input3-4"></button>
-        <button class="input-box px-4 py-2 bg-gray-200 rounded" id="input3-5"></button>
+      <div class="flex space-x-2 justify-center flex-wrap" id="row3">
+        <button class="input-box px-4 py-2 bg-gray-200 rounded mb-2" id="input3-1"></button>
+        <button class="input-box px-4 py-2 bg-gray-200 rounded mb-2" id="input3-2"></button>
+        <button class="input-box px-4 py-2 bg-gray-200 rounded mb-2" id="input3-3"></button>
+        <button class="input-box px-4 py-2 bg-gray-200 rounded mb-2" id="input3-4"></button>
+        <button class="input-box px-4 py-2 bg-gray-200 rounded mb-2" id="input3-5"></button>
       </div>
     </div>
 
     <!-- Chances Remaining -->
     <p id="chances-remaining" class="text-center text-gray-700 font-semibold mb-4">Chances remaining: 3</p>
 
-    <!-- SQL Keywords, Operators, Clauses, Table/Column Names -->
-    <div class="grid grid-cols-5 gap-2 mb-4">
-        <!-- Existing Buttons with hover and active states -->
-        <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('select')">select</button>
-        <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('*')">*</button>
-        <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('from')">from</button>
-        <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('teacher')">teacher</button>
-        <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput(';')">;</button>
-      
-        <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('where')">where</button>
-        <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('group')">group</button>
-        <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('by')">by</button>
-        <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('order')">order</button>
-        <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('having')">having</button>
-      
-        <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('as')">as</button>
-        <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('table')">table</button>
-        <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('in')">in</button>
-        <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('all')">all</button>
-        <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('like')">like</button>
-      
-        <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('and')">and</button>
-        <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('or')">or</button>
-        <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('salary')">salary</button>
-        <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('name')">name</button>
-        <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('data')">data</button>
-      
-        <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('of')">of</button>
-        <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('Physics')">Physics</button>
-      
-        <!-- New Buttons with hover and active states -->
-        <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('join')">join</button>
-        <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('on')">on</button>
-        <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('limit')">limit</button>
-      </div>
-      
-
-    <!-- Control Buttons -->
-    <div class="flex space-x-2 justify-center mb-4">
-      <button id="go-btn" class="bg-green-500 text-white px-4 py-2 rounded" onclick="checkAnswer()">GO</button>
-      <button id="backspace-btn" class="bg-gray-400 text-white px-4 py-2 rounded" onclick="backspace()">Backspace</button>
-      <button id="reset-btn" class="bg-red-500 text-white px-4 py-2 rounded" onclick="resetInputs()">RESET</button>
+    <!-- Code Snippets Buttons -->
+    <div id="buttons-container" class="grid grid-cols-5 gap-2 mb-4">
+      <!-- Existing Buttons with hover and active states -->
+      <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('select')">select</button>
+      <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('*')">*</button>
+      <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('from')">from</button>
+      <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('teacher')">teacher</button>
+      <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput(';')">;</button>
+    
+      <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('where')">where</button>
+      <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('group')">group</button>
+      <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('by')">by</button>
+      <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('order')">order</button>
+      <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('having')">having</button>
+    
+      <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('as')">as</button>
+      <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('table')">table</button>
+      <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('in')">in</button>
+      <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('all')">all</button>
+      <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('like')">like</button>
+    
+      <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('and')">and</button>
+      <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('or')">or</button>
+      <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('salary')">salary</button>
+      <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('name')">name</button>
+      <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('data')">data</button>
+    
+      <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('of')">of</button>
+      <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('Physics')">Physics</button>
+    
+      <!-- New Buttons with hover and active states -->
+      <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('join')">join</button>
+      <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('on')">on</button>
+      <button class="bg-gray-200 p-2 rounded text-sm hover:bg-gray-300 active:drop-shadow-lg" onclick="addToInput('limit')">limit</button>
     </div>
 
-    <!-- Message Display -->
-    <p id="message" class="text-center font-bold"></p>
+    <!-- Control Buttons -->
+    <div class="flex flex-wrap justify-center gap-4 mb-4">
+      <button id="go-btn" class="bg-green-500 text-white px-4 py-2 rounded w-full sm:w-auto" onclick="checkAnswer()">GO</button>
+      <button id="backspace-btn" class="bg-gray-400 text-white px-4 py-2 rounded w-full sm:w-auto" onclick="backspace()">Backspace</button>
+      <button id="reset-btn" class="bg-blue-500 text-white px-4 py-2 rounded w-full sm:w-auto" onclick="resetInputs()">Reset</button>
+    </div>
+
+    <p id="message" class="text-center text-gray-700 font-semibold"></p>
   </div>
 
-  <script>
-    let attempts = [
-      ['', '', '', '', ''],
-      ['', '', '', '', ''],
-      ['', '', '', '', '']
-    ];
-    let answer = ['select', '*', 'from', 'teacher', ';'];
-    let chancesRemaining = 3;
-    let currentAttempt = 0;
-    let currentInputIndex = 0;
-
-    function addToInput(word) {
-      if (currentInputIndex < 5 && currentAttempt < 3) {
-        attempts[currentAttempt][currentInputIndex] = word;
-        document.getElementById(`input${currentAttempt + 1}-${currentInputIndex + 1}`).textContent = word;
-        currentInputIndex++;
-      }
-    }
-
-    function backspace() {
-      if (currentInputIndex > 0) {
-        currentInputIndex--;
-        attempts[currentAttempt][currentInputIndex] = '';
-        document.getElementById(`input${currentAttempt + 1}-${currentInputIndex + 1}`).textContent = '';
-      }
-    }
-
-    function checkAnswer() {
-      if (currentInputIndex < 5) return; // Ensure all inputs are filled
-
-      let correctCount = 0;
-
-      // Loop through the inputs and compare to the answer
-      for (let i = 0; i < 5; i++) {
-        const box = document.getElementById(`input${currentAttempt + 1}-${i + 1}`);
-        const userInput = attempts[currentAttempt][i].trim(); // Trim spaces for accurate comparison
-        const correctAnswer = answer[i];
-
-        if (userInput === correctAnswer) {
-          box.classList.add('bg-green-500', 'text-white');
-          correctCount++;
-        } else if (answer.includes(userInput)) {
-          box.classList.add('bg-yellow-500', 'text-white');
-        } else {
-          box.classList.add('bg-red-500', 'text-white');
-        }
-      }
-
-      // Check win condition
-      if (correctCount === 5) {
-        document.getElementById('message').textContent = 'Congratulations! You guessed correctly!';
-        return;
-      }
-
-      // Update chances and prepare for the next attempt
-      chancesRemaining--;
-      document.getElementById('chances-remaining').textContent = `Chances remaining: ${chancesRemaining}`;
-
-      // Adjust UI color based on remaining chances
-      if (chancesRemaining === 0) {
-        // Show the correct answer when the player runs out of chances
-        const correctAnswerStr = answer.join(' ');
-        document.getElementById('message').textContent = `Game Over! The correct answer was: ${correctAnswerStr}`;
-      } else {
-        currentAttempt++;
-        currentInputIndex = 0;
-      }
-    }
-
-    function resetInputs() {
-      // Clear all inputs and reset game state
-      attempts = [
-        ['', '', '', '', ''],
-        ['', '', '', '', ''],
-        ['', '', '', '', '']
-      ];
-      currentAttempt = 0;
-      currentInputIndex = 0;
-      chancesRemaining = 3;
-
-      // Clear UI and reset styling
-      document.getElementById('chances-remaining').textContent = `Chances remaining: ${chancesRemaining}`;
-      document.getElementById('message').textContent = '';
-      for (let attemptRow = 1; attemptRow <= 3; attemptRow++) {
-        for (let inputBox = 1; inputBox <= 5; inputBox++) {
-          const box = document.getElementById(`input${attemptRow}-${inputBox}`);
-          box.textContent = '';
-          box.classList.remove('bg-green-500', 'bg-yellow-500', 'bg-red-500', 'text-white');
-        }
-      }
-    }
-  </script>
+</main>
+  <footer class="bg-gray-100 text-center py-4 mt-8">
+    <div class="text-gray-700 text-sm">
+        &copy; <span id="currentYear"></span> Center for Technology
+    </div>
+    <div class="text-gray-600 text-xs mt-1">
+        About us - Jatin Ambasaana, Om Gupta, Prof. Sameer Sahastrabudhi
+    </div>
+  </footer>
+  <script src="script.js"></script>
 </body>
 </html>
