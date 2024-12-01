@@ -7,11 +7,17 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="flex items-center justify-center h-screen bg-gray-100">
-    <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+    <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full" id="welcome-container">
+        <h1 class="text-2xl font-bold text-center mb-4">Welcome to SQL Wordle!</h1>
+        <p class="text-center mb-6">Please enter your name to start playing:</p>
+        <input type="text" id="name-input" class="border border-gray-300 p-2 rounded w-full mb-4" placeholder="Enter your name" />
+        <button id="start-game-btn" class="bg-blue-500 text-white px-4 py-2 rounded w-full">Start Game</button>
+    </div>
+
+    <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full hidden" id="game-container">
         <h1 class="text-2xl font-bold text-center mb-4">SQL-Wordle P1.0</h1>
-        <p class="text-center mb-6">Fill in the blanks to retrieve all data from the teacher table using code snippets below.</p>
+        <p class="text-center mb-6" id="welcome-message"></p>
         
-        <!-- Attempts Section -->
         <div id="attempts" class="space-y-3 mb-6">
             <div class="flex space-x-2 justify-center" id="row1">
                 <button class="input-box px-4 py-2 bg-gray-200 rounded" id="input1-1"></button>
@@ -36,47 +42,54 @@
             </div>
         </div>
 
-        <!-- Chances Remaining -->
         <p id="chances-remaining" class="text-center text-gray-700 font-semibold mb-4">Chances remaining: 3</p>
 
-        <!-- Code Snippets Buttons -->
         <div class="grid grid-cols-5 gap-2 mb-4">
-            <button class="bg-gray-200 p-2 rounded text-sm" onclick="addToInput('select')">select</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" onclick="addToInput('*')">*</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" onclick="addToInput('from')">from</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" onclick="addToInput('teacher')">teacher</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" onclick="addToInput(';')">;</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" onclick="addToInput('where')">where</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" onclick="addToInput('group')">group</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" onclick="addToInput('by')">by</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" onclick="addToInput('order')">order</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" onclick="addToInput('having')">having</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" onclick="addToInput('as')">as</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" onclick="addToInput('table')">table</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" onclick="addToInput('in')">in</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" onclick="addToInput('all')">all</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" onclick="addToInput('like')">like</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" onclick="addToInput('and')">and</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" onclick="addToInput('or')">or</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" onclick="addToInput('salary')">salary</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" onclick="addToInput('name')">name</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" onclick="addToInput('data')">data</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" onclick="addToInput('of')">of</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" onclick="addToInput('Physics')">Physics</button>
+            <button class="bg-gray-200 p-2 rounded text-sm" data-word="select" onclick="addToInput('select')">select</button>
+            <button class="bg-gray-200 p-2 rounded text-sm" data-word="*" onclick="addToInput('*')">*</button>
+            <button class="bg-gray-200 p-2 rounded text-sm" data-word="from" onclick="addToInput('from')">from</button>
+            <button class="bg-gray-200 p-2 rounded text-sm" data-word="teacher" onclick="addToInput('teacher')">teacher</button>
+            <button class="bg-gray-200 p-2 rounded text-sm" data-word=";" onclick="addToInput(';')">;</button>
+            <button class="bg-gray-200 p-2 rounded text-sm" data-word="where" onclick="addToInput('where')">where</button>
+            <button class="bg-gray-200 p-2 rounded text-sm" data-word="group" onclick="addToInput('group')">group</button>
+            <button class="bg-gray-200 p-2 rounded text-sm" data-word="by" onclick="addToInput('by')">by</button>
+            <button class="bg-gray-200 p-2 rounded text-sm" data-word="order" onclick="addToInput('order')">order</button>
+            <button class="bg-gray-200 p-2 rounded text-sm" data-word="having" onclick="addToInput('having')">having</button>
+            <button class="bg-gray-200 p-2 rounded text-sm" data-word="as" onclick="addToInput('as')">as</button>
+            <button class="bg-gray-200 p-2 rounded text-sm" data-word="table" onclick="addToInput('table')">table</button>
+            <button class="bg-gray-200 p-2 rounded text-sm" data-word="in" onclick="addToInput('in')">in</button>
+            <button class="bg-gray-200 p-2 rounded text-sm" data-word="all" onclick="addToInput('all')">all</button>
+            <button class="bg-gray-200 p-2 rounded text-sm" data-word="like" onclick="addToInput('like')">like</button>
+            <button class="bg-gray-200 p-2 rounded text-sm" data-word="and" onclick="addToInput('and')">and</button>
+            <button class="bg-gray-200 p-2 rounded text-sm" data-word="or" onclick="addToInput('or')">or</button>
+            <button class="bg-gray-200 p-2 rounded text-sm" data-word="salary" onclick="addToInput('salary')">salary</button>
+            <button class="bg-gray-200 p-2 rounded text-sm" data-word="name" onclick="addToInput('name')">name</button>
+            <button class="bg-gray-200 p-2 rounded text-sm" data-word="data" onclick="addToInput('data')">data</button>
+            <button class="bg-gray-200 p-2 rounded text-sm" data-word="of" onclick="addToInput('of')">of</button>
+            <button class="bg-gray-200 p-2 rounded text-sm" data-word="Physics" onclick="addToInput('Physics')">Physics</button>
         </div>
 
-        <!-- Control Buttons -->
         <div class="flex space-x-2 justify-center mb-4">
             <button id="go-btn" class="bg-green-500 text-white px-4 py-2 rounded" onclick="checkAnswer()">GO</button>
             <button id="backspace-btn" class="bg-gray-400 text-white px-4 py-2 rounded" onclick="backspace()">Backspace</button>
             <button id="reset-btn" class="bg-red-500 text-white px-4 py-2 rounded" onclick="resetInputs()">RESET</button>
         </div>
 
-        <!-- Message Display -->
         <p id="message" class="text-center font-bold"></p>
     </div>
 
-    <!-- Attach the external script -->
     <script src="script.js"></script>
+    <script>
+        document.getElementById('start-game-btn').addEventListener('click', function() {
+            const userName = document.getElementById('name-input').value.trim();
+            if (userName) {
+                document.getElementById('welcome-message').textContent = `Welcome, ${userName}! Let's play SQL Wordle!`;
+                document.getElementById('welcome-container').style.display = 'none'; // Hide the welcome container
+                document.getElementById('game-container').style.display = 'block'; // Show the game container
+            } else {
+                alert("Name is required to play the game.");
+            }
+        });
+    </script>
 </body>
 </html>

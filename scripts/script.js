@@ -6,7 +6,7 @@ let levels = []; // To store levels data
 
 // Function to load levels from JSON
 function loadLevels() {
-    fetch('data/levels.json')
+    fetch('data/questions.json')
         .then(response => response.json())
         .then(data => {
             levels = data.levels; // Store the levels in a global variable
@@ -18,8 +18,8 @@ function loadLevels() {
 // Function to start a specific level
 function startLevel(levelIndex) {
     const level = levels[levelIndex]; // Access the current level
-    document.getElementById('question').textContent = level.words[0]; // Display the first question
-    document.getElementById('description').textContent = level.descriptions[0]; // Display the description
+    document.getElementById('question').textContent = level.questions[0]; // Display the first question
+    document.getElementById('description').textContent = level.answers[0]; // Display the correct answer
     // Reset attempts and input index for the new level
     currentAttempt = 0;
     currentInputIndex = 0;
@@ -27,20 +27,22 @@ function startLevel(levelIndex) {
     document.getElementById('chances-remaining').textContent = `Chances remaining: ${chancesRemaining}`;
 }
 
-// Function to add input from buttons
+// Function to add input from buttons with interactivity
 function addToInput(value) {
     if (currentInputIndex < 5) {
-        document.getElementById(`input${currentAttempt + 1}-${currentInputIndex + 1}`).textContent = value;
+        const box = document.getElementById(`input${currentAttempt + 1}-${currentInputIndex + 1}`);
+        box.textContent = value;
         currentInputIndex++;
-    }
-}
 
-// Function to handle button click feedback
-function buttonClickFeedback(button) {
-    button.classList.add('bg-blue-300'); // Change color to indicate click
-    setTimeout(() => {
-        button.classList.remove('bg-blue-300'); // Reset color after a short delay
-    }, 200); // Delay in milliseconds
+        // Add interactivity to the button
+        const button = document.querySelector(`button[data-word="${value}"]`);
+        if (button) {
+            button.classList.add('bg-blue-300'); // Change color to indicate it's clicked
+            setTimeout(() => {
+                button.classList.remove('bg-blue-300'); // Reset color after a short delay
+            }, 200); // Delay in milliseconds
+        }
+    }
 }
 
 // Function to handle backspace
@@ -58,7 +60,7 @@ function checkAnswer() {
     );
 
     // Create a copy of the correct answer to track which letters have been matched
-    const answerCopy = [...correctAnswer];
+    const answerCopy = [...levels[currentAttempt].answers]; // Use the new answers property
 
     row.forEach((value, index) => {
         const box = document.getElementById(`input${currentAttempt + 1}-${index + 1}`);
@@ -88,7 +90,7 @@ function checkAnswer() {
         }
     });
 
-    if (JSON.stringify(row) === JSON.stringify(correctAnswer)) {
+    if (JSON.stringify(row) === JSON.stringify(answerCopy)) {
         document.getElementById('message').textContent = 'Congratulations! You Win!';
         return;
     }
@@ -136,11 +138,4 @@ document.getElementById('start-game-btn').addEventListener('click', function() {
     } else {
         alert("Name is required to play the game.");
     }
-});
-
-// Add event listeners to buttons for feedback
-document.querySelectorAll('.grid button').forEach(button => {
-    button.addEventListener('click', function() {
-        buttonClickFeedback(button); // Call feedback function on click
-    });
 });
