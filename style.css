@@ -33,7 +33,6 @@
     transform: scale(1.10); /* Slightly enlarge the active row */
     z-index: 1;
     background-color: #e0f7fa;
-    /* border: 2px solid #00796b; */
   }
   
   .attempt-row .input-box {
@@ -101,7 +100,7 @@
 
 
   .bg-green-500 {
-    background-color: #4CAF50; /* Adjust as needed */
+    background-color: #4CAF50;
 }
   .bg-red-500 {
     background-color: #f44336; /* Adjust as needed */
