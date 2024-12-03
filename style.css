@@ -25,11 +25,15 @@
     justify-content: center;
     flex-wrap: nowrap;
     margin-bottom: 10px;
+    transition: transform 0.3s ease;
   }
   
   .attempt-row.active {
+    
+    transform: scale(1.10); /* Slightly enlarge the active row */
+    z-index: 1;
     background-color: #e0f7fa;
-    border: 2px solid #00796b;
+    /* border: 2px solid #00796b; */
   }
   
   .attempt-row .input-box {
