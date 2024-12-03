@@ -17,10 +17,10 @@ function loadLevels() {
 
 // Function to start a specific level
 function startLevel(levelIndex) {
-    const level = levels[levelIndex]; // Access the current level
-    const question = level.questions[levelIndex]; // Get the current question
-    const answer = level.answers[levelIndex]; // Get the corresponding answer
-    const options = level.options[levelIndex].split(' '); // Get options and split into array
+    const level = levels[levelIndex];
+    const question = level.questions[levelIndex];
+    const answer = level.answers[levelIndex];
+    const options = level.options[levelIndex].split(' ');
 
     // Display the question
     document.getElementById('question').textContent = question;
@@ -35,14 +35,17 @@ function startLevel(levelIndex) {
     const attemptsContainer = document.getElementById('attempts');
     attemptsContainer.innerHTML = ''; // Clear previous inputs
 
-    for (let attempt = 0; attempt < 3; attempt++) { // Create 3 rows for attempts
+    for (let attempt = 0; attempt < 3; attempt++) {
         const row = document.createElement('div');
-        row.className = 'attempt-row flex space-x-2 justify-center'; // Add a class for styling
+        row.className = 'attempt-row'; // Add a class for styling
+        if (attempt === currentAttempt) {
+            row.classList.add('active'); // Highlight the current attempt
+        }
 
         const answerWords = answer.replace(/,/g, '').split(' '); // Split answer into words, ignoring commas
         for (let i = 0; i < answerWords.length; i++) { // Create input boxes based on answer length
             const box = document.createElement('button');
-            box.className = 'input-box px-4 py-2 bg-gray-200 rounded';
+            box.className = 'input-box'; // Use the input box class
             box.id = `input${attempt + 1}-${i + 1}`;
             row.appendChild(box);
         }
@@ -95,8 +98,11 @@ function buttonClickFeedback(button) {
 // Function to handle backspace
 function backspace() {
     if (currentInputPosition > 0) {
-        currentInputPosition--;
-        document.getElementById(`input${currentAttempt + 1}-${currentInputPosition + 1}`).textContent = '';
+        const inputBox = document.getElementById(`input${currentAttempt + 1}-${currentInputPosition}`);
+        if (inputBox) {
+            inputBox.textContent = '';
+            currentInputPosition--;
+        }
     }
 }
 
@@ -120,10 +126,9 @@ function addFeedbackClass(box, feedback) {
 function checkAnswer() {
     const currentLevel = levels[0];
     const answer = currentLevel.answers[0];
-    const answerWords = answer.replace(/,/g, '').split(' ');
-    const expectedLength = answerWords.length;
-    
-    // Fix: More reliable input collection
+    const expectedLength = answer.replace(/,/g, '').split(' ').length; // Get expected length directly
+
+    // Collect the current input values
     const row = [];
     for (let i = 1; i <= expectedLength; i++) {
         const input = document.getElementById(`input${currentAttempt + 1}-${i}`);
@@ -138,9 +143,9 @@ function checkAnswer() {
     // Debug logging
     console.log('Expected length:', expectedLength);
     console.log('Current inputs:', row);
-    console.log('Answer words:', answerWords);
+    console.log('Answer:', answer);
 
-    // More robust validation
+    // Validate inputs
     const hasEmptyInputs = row.some(input => {
         const trimmed = String(input).trim();
         return trimmed === '' || trimmed === 'undefined' || trimmed === 'null';
@@ -150,10 +155,12 @@ function checkAnswer() {
         alert('Please fill all boxes before checking');
         return;
     }
-    
+
+    const answerWords = answer.replace(/,/g, '').split(' '); // Declare answerWords here
+
     // Create feedback map for the current attempt
     const feedbackMap = new Map();
-    
+
     // First pass: Mark exact matches (green)
     row.forEach((value, index) => {
         if (value === answerWords[index]) {
@@ -178,7 +185,7 @@ function checkAnswer() {
         if (feedbackMap.has(word)) {
             const newFeedback = feedbackMap.get(word);
             const currentClasses = button.classList;
-            
+
             if (
                 (newFeedback === 'correct') || 
                 (newFeedback === 'wrong-position' && !currentClasses.contains('bg-green-500')) ||
@@ -198,7 +205,7 @@ function checkAnswer() {
 
     chancesRemaining--;
     document.getElementById('chances-remaining').textContent = `Chances remaining: ${chancesRemaining}`;
-    
+
     if (chancesRemaining === 0) {
         document.getElementById('message').textContent = 'Game Over!';
         enableShareButton('lose');
@@ -207,29 +214,60 @@ function checkAnswer() {
 
     currentAttempt++;
     currentInputPosition = 0;
+
+    // Highlight the current attempt row
+    const attemptRows = document.querySelectorAll('.attempt-row');
+    attemptRows.forEach((row, index) => {
+        if (index === currentAttempt) {
+            row.classList.add('active'); // Highlight current attempt
+        } else {
+            row.classList.remove('active'); // Remove highlight from other attempts
+        }
+    });
 }
 
 // Modified resetInputs function to only reset input boxes, not option buttons
 function resetInputs() {
-    for (let i = 1; i <= 3; i++) {
-        for (let j = 1; j <= 5; j++) {
+    // Clear all input boxes
+    for (let i = 1; i <= 3; i++) { // Assuming 3 attempts
+        for (let j = 1; j <= 5; j++) { // Assuming 5 input boxes per attempt
             const box = document.getElementById(`input${i}-${j}`);
-            box.textContent = '';
-            box.classList.remove('bg-green-500', 'bg-yellow-500', 'bg-red-500', 'text-white');
+            if (box) {
+                box.textContent = ''; // Clear the input
+                box.classList.remove('bg-green-500', 'bg-yellow-500', 'bg-red-500', 'text-white'); // Remove feedback classes
+            }
         }
     }
 
     // Reset game state
-    currentAttempt = 0;
-    currentInputPosition = 0;
-    chancesRemaining = 3;
-    document.getElementById('chances-remaining').textContent = 'Chances remaining: 3';
-    document.getElementById('message').textContent = '';
+    currentAttempt = 0; // Reset to the first attempt
+    currentInputPosition = 0; // Reset input position
+    chancesRemaining = 3; // Reset chances
+    document.getElementById('chances-remaining').textContent = 'Chances remaining: 3'; // Update UI
+    document.getElementById('message').textContent = ''; // Clear any messages
 
     // Reset share button state
     const shareBtn = document.getElementById('share-btn');
     shareBtn.classList.remove('bg-blue-500', 'hover:bg-blue-600');
     shareBtn.classList.add('bg-gray-300', 'cursor-not-allowed', 'opacity-50');
+
+    // Reset active attempt highlighting
+    const attemptRows = document.querySelectorAll('.attempt-row');
+    attemptRows.forEach(row => {
+        row.classList.remove('active'); // Remove active class from all rows
+    });
+
+    // Highlight the first attempt row
+    if (attemptRows.length > 0) {
+        attemptRows[0].classList.add('active'); // Highlight the first attempt row
+    }
+
+    // Reset option buttons
+    const optionButtons = document.querySelectorAll('#options-container button');
+    optionButtons.forEach(button => {
+        button.classList.remove('bg-green-500', 'bg-yellow-500', 'bg-red-500', 'text-white'); // Remove feedback classes
+        button.classList.add('bg-gray-200'); // Reset to default style
+    });
 }
 
 // Event listeners

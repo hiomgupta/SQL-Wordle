@@ -9,28 +9,71 @@
     align-items: center;
     height: 100vh;
     margin: 0;
+    background-color: #f7f7f7;
   }
   
   .game-container {
     text-align: center;
-    width: 320px;
+    width: 100%;
+    max-width: 320px;
+    padding: 20px;
+    overflow: hidden;
   }
   
-  .attempt-row input {
-    width: 40px;
+  .attempt-row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: nowrap;
+    margin-bottom: 10px;
+  }
+  
+  .attempt-row.active {
+    background-color: #e0f7fa;
+    border: 2px solid #00796b;
+  }
+  
+  .attempt-row .input-box {
+    margin: 5px;
+    flex: 1 0 51px;
+    min-width: 51px;
+    max-width: 80px;
     height: 40px;
-    margin: 5px;
     text-align: center;
-    font-size: 18px;
+    font-size: 14px;
     border: 2px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    white-space: nowrap;
+    /* text-overflow: ellipsis; */
+    padding: 2;
+    line-height: 40px;
   }
   
-  .code-snippets button,
-  .controls button {
+  .attempt-row .input-box.bg-green-500 {
+    background-color: #4CAF50 !important;
+  }
+  
+  .attempt-row .input-box.bg-red-500 {
+    background-color: #f44336 !important;
+  }
+  
+  #options-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+  
+  #options-container button {
     margin: 5px;
+    flex: 1 1 60px;
+    min-width: 60px;
     padding: 10px;
-    font-size: 16px;
+    font-size: 14px;
     cursor: pointer;
+    overflow: hidden;
+    white-space: nowrap;
+    /* padding: 0; */
   }
   
   #go-btn {
@@ -71,9 +114,9 @@
 
 #share-btn {
     margin-top: 1rem;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
 }
 
-#share-btn:hover {
+#share-btn.bg-blue-500:hover {
     background-color: #3b82f6;
 }
