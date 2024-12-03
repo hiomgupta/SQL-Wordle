@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SQL-Wordle Game</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body class="flex items-center justify-center h-screen bg-gray-100">
     <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full" id="welcome-container">
@@ -18,55 +19,16 @@
         <h1 class="text-2xl font-bold text-center mb-4">SQL-Wordle P1.0</h1>
         <p class="text-center mb-6" id="welcome-message"></p>
         
+        <p id="question" class="text-center mb-4 font-semibold"></p>
+
         <div id="attempts" class="space-y-3 mb-6">
-            <div class="flex space-x-2 justify-center" id="row1">
-                <button class="input-box px-4 py-2 bg-gray-200 rounded" id="input1-1"></button>
-                <button class="input-box px-4 py-2 bg-gray-200 rounded" id="input1-2"></button>
-                <button class="input-box px-4 py-2 bg-gray-200 rounded" id="input1-3"></button>
-                <button class="input-box px-4 py-2 bg-gray-200 rounded" id="input1-4"></button>
-                <button class="input-box px-4 py-2 bg-gray-200 rounded" id="input1-5"></button>
-            </div>
-            <div class="flex space-x-2 justify-center" id="row2">
-                <button class="input-box px-4 py-2 bg-gray-200 rounded" id="input2-1"></button>
-                <button class="input-box px-4 py-2 bg-gray-200 rounded" id="input2-2"></button>
-                <button class="input-box px-4 py-2 bg-gray-200 rounded" id="input2-3"></button>
-                <button class="input-box px-4 py-2 bg-gray-200 rounded" id="input2-4"></button>
-                <button class="input-box px-4 py-2 bg-gray-200 rounded" id="input2-5"></button>
-            </div>
-            <div class="flex space-x-2 justify-center" id="row3">
-                <button class="input-box px-4 py-2 bg-gray-200 rounded" id="input3-1"></button>
-                <button class="input-box px-4 py-2 bg-gray-200 rounded" id="input3-2"></button>
-                <button class="input-box px-4 py-2 bg-gray-200 rounded" id="input3-3"></button>
-                <button class="input-box px-4 py-2 bg-gray-200 rounded" id="input3-4"></button>
-                <button class="input-box px-4 py-2 bg-gray-200 rounded" id="input3-5"></button>
-            </div>
+            <!-- Input boxes will be generated dynamically -->
         </div>
 
         <p id="chances-remaining" class="text-center text-gray-700 font-semibold mb-4">Chances remaining: 3</p>
 
-        <div class="grid grid-cols-5 gap-2 mb-4">
-            <button class="bg-gray-200 p-2 rounded text-sm" data-word="select" onclick="addToInput('select')">select</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" data-word="*" onclick="addToInput('*')">*</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" data-word="from" onclick="addToInput('from')">from</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" data-word="teacher" onclick="addToInput('teacher')">teacher</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" data-word=";" onclick="addToInput(';')">;</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" data-word="where" onclick="addToInput('where')">where</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" data-word="group" onclick="addToInput('group')">group</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" data-word="by" onclick="addToInput('by')">by</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" data-word="order" onclick="addToInput('order')">order</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" data-word="having" onclick="addToInput('having')">having</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" data-word="as" onclick="addToInput('as')">as</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" data-word="table" onclick="addToInput('table')">table</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" data-word="in" onclick="addToInput('in')">in</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" data-word="all" onclick="addToInput('all')">all</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" data-word="like" onclick="addToInput('like')">like</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" data-word="and" onclick="addToInput('and')">and</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" data-word="or" onclick="addToInput('or')">or</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" data-word="salary" onclick="addToInput('salary')">salary</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" data-word="name" onclick="addToInput('name')">name</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" data-word="data" onclick="addToInput('data')">data</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" data-word="of" onclick="addToInput('of')">of</button>
-            <button class="bg-gray-200 p-2 rounded text-sm" data-word="Physics" onclick="addToInput('Physics')">Physics</button>
+        <div class="grid grid-cols-5 gap-2 mb-4" id="options-container">
+            <!-- Option buttons will be generated dynamically -->
         </div>
 
         <div class="flex space-x-2 justify-center mb-4">
