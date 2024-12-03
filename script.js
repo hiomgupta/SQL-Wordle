@@ -67,9 +67,9 @@ function startLevel(levelIndex) {
 
 // Function to add input from buttons
 function addToInput(value) {
-    // Get the current level's answer
-    const currentLevel = levels[0];
-    const answer = currentLevel.answers[0].replace(/,/g, '').split(' ');
+    // Get the current level's answer instead of using currentAttempt as an index
+    const currentLevel = levels[0]; // Since we start with first level
+    const answer = currentLevel.answers[0].replace(/,/g, '').split(' '); // Get the correct answer
     
     if (currentInputPosition < answer.length) {
         const inputBox = document.getElementById(`input${currentAttempt + 1}-${currentInputPosition + 1}`);
@@ -91,14 +91,8 @@ function buttonClickFeedback(button) {
 // Function to handle backspace
 function backspace() {
     if (currentInputPosition > 0) {
-        // Get the current input box
-        const currentBox = document.getElementById(`input${currentAttempt + 1}-${currentInputPosition}`);
-        if (currentBox) {
-            // Clear the current box
-            currentBox.textContent = '';
-            // Move the position back
-            currentInputPosition--;
-        }
+        currentInputPosition--;
+        document.getElementById(`input${currentAttempt + 1}-${currentInputPosition + 1}`).textContent = '';
     }
 }
 
@@ -128,7 +122,12 @@ function checkAnswer() {
         document.getElementById(`input${currentAttempt + 1}-${i + 1}`).textContent
     );
 
-    
+    // Validation
+    if (row.some(input => !input || input.trim() === '')) {
+        alert('Please fill all boxes before checking');
+        return;
+    }
+
     const answerWords = answer.replace(/,/g, '').split(' ');
     
     // Create feedback map for the current attempt
@@ -152,18 +151,29 @@ function checkAnswer() {
         addFeedbackClass(box, feedback);
     });
 
-    // Apply feedback to option buttons
+    // Update option buttons with feedback colors (modified part)
     document.querySelectorAll('.option-botton').forEach(button => {
         const word = button.getAttribute('data-word');
         if (feedbackMap.has(word)) {
-            updateOptionButtonColor(button, feedbackMap.get(word));
+            const newFeedback = feedbackMap.get(word);
+            const currentClasses = button.classList;
+            
+            // Only upgrade the feedback color if it's better than the current one
+            if (
+                (newFeedback === 'correct') || 
+                (newFeedback === 'wrong-position' && !currentClasses.contains('bg-green-500')) ||
+                (newFeedback === 'incorrect' && !currentClasses.contains('bg-green-500') && !currentClasses.contains('bg-yellow-500'))
+            ) {
+                updateOptionButtonColor(button, newFeedback);
+            }
         }
     });
 
-    // Rest of the game logic
+    // Rest of game logic...
     if (JSON.stringify(row) === JSON.stringify(answerWords)) {
         document.getElementById('message').textContent = 'Congratulations! You Win!';
-        document.getElementById('share-btn').classList.remove('hidden');
+        document.getElementById('share-btn').classList.remove('bg-gray-300', 'cursor-not-allowed', 'opacity-50');
+        document.getElementById('share-btn').classList.add('bg-blue-500', 'hover:bg-blue-600');
         return;
     }
 
@@ -172,22 +182,16 @@ function checkAnswer() {
     
     if (chancesRemaining === 0) {
         document.getElementById('message').textContent = 'Game Over!';
-        document.getElementById('share-btn').classList.remove('hidden');
+        document.getElementById('share-btn').classList.remove('bg-gray-300', 'cursor-not-allowed', 'opacity-50');
+        document.getElementById('share-btn').classList.add('bg-blue-500', 'hover:bg-blue-600');
         return;
     }
 
     currentAttempt++;
     currentInputPosition = 0;
-
-    // Update share button when game ends (either win or lose)
-    if (JSON.stringify(row) === JSON.stringify(answerWords) || chancesRemaining === 0) {
-        const shareBtn = document.getElementById('share-btn');
-        shareBtn.classList.remove('bg-gray-300', 'cursor-not-allowed', 'opacity-50');
-        shareBtn.classList.add('bg-blue-500', 'hover:bg-blue-600');
-    }
 }
 
-// Function to reset inputs
+// Modified resetInputs function to only reset input boxes, not option buttons
 function resetInputs() {
     for (let i = 1; i <= 3; i++) {
         for (let j = 1; j <= 5; j++) {
@@ -197,22 +201,12 @@ function resetInputs() {
         }
     }
 
-    // Reset button colors
-    document.querySelectorAll('.grid button').forEach(button => {
-        button.classList.remove('bg-green-500', 'bg-yellow-500', 'bg-red-500', 'text-white', 'bg-blue-300');
-        button.classList.add('bg-gray-200'); // Reset to default color
-    });
-
     // Reset game state
     currentAttempt = 0;
     currentInputPosition = 0;
     chancesRemaining = 3;
     document.getElementById('chances-remaining').textContent = 'Chances remaining: 3';
     document.getElementById('message').textContent = '';
-
-    // Optionally, reset the question and description
-    document.getElementById('question').textContent = '';
-    document.getElementById('description').textContent = '';
 
     // Reset share button state
     const shareBtn = document.getElementById('share-btn');
@@ -238,30 +232,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add event listener for GO button
     document.getElementById('go-btn').addEventListener('click', checkAnswer);
 
-    // Add event listener for backspace button with debounce
-    const backspaceBtn = document.getElementById('backspace-btn');
-    let isBackspacePressed = false;
-
-    backspaceBtn.addEventListener('click', function(e) {
-        if (!isBackspacePressed) {
-            isBackspacePressed = true;
-            backspace();
-            setTimeout(() => {
-                isBackspacePressed = false;
-            }, 200); // Debounce time
-        }
-    });
-
-    // Optional: Add keyboard support for backspace
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Backspace' && !isBackspacePressed) {
-            isBackspacePressed = true;
-            backspace();
-            setTimeout(() => {
-                isBackspacePressed = false;
-            }, 200); // Debounce time
-        }
-    });
+    // Add event listener for backspace button
+    document.getElementById('backspace-btn').addEventListener('click', backspace);
 
     // Add event listener for reset button
     document.getElementById('reset-btn').addEventListener('click', resetInputs);
@@ -324,15 +296,4 @@ function generateShareText() {
     }
 
     return `${gameName}${attemptGrid}\nPlay at: [your-game-url]`;
-}
-
-// Helper function to validate position
-function isValidPosition(position, maxLength) {
-    return position >= 0 && position < maxLength;
-}
-
-// Helper function to get input box safely
-function getInputBox(attempt, position) {
-    const box = document.getElementById(`input${attempt + 1}-${position}`);
-    return box;
 }
