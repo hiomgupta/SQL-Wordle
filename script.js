@@ -67,9 +67,9 @@ function startLevel(levelIndex) {
 
 // Function to add input from buttons
 function addToInput(value) {
-    // Get the current level's answer instead of using currentAttempt as an index
-    const currentLevel = levels[0]; // Since we start with first level
-    const answer = currentLevel.answers[0].replace(/,/g, '').split(' '); // Get the correct answer
+    // Get the current level's answer
+    const currentLevel = levels[0];
+    const answer = currentLevel.answers[0].replace(/,/g, '').split(' ');
     
     if (currentInputPosition < answer.length) {
         const inputBox = document.getElementById(`input${currentAttempt + 1}-${currentInputPosition + 1}`);
@@ -91,8 +91,14 @@ function buttonClickFeedback(button) {
 // Function to handle backspace
 function backspace() {
     if (currentInputPosition > 0) {
-        currentInputPosition--;
-        document.getElementById(`input${currentAttempt + 1}-${currentInputPosition + 1}`).textContent = '';
+        // Get the current input box
+        const currentBox = document.getElementById(`input${currentAttempt + 1}-${currentInputPosition}`);
+        if (currentBox) {
+            // Clear the current box
+            currentBox.textContent = '';
+            // Move the position back
+            currentInputPosition--;
+        }
     }
 }
 
@@ -122,11 +128,7 @@ function checkAnswer() {
         document.getElementById(`input${currentAttempt + 1}-${i + 1}`).textContent
     );
 
-    if (!row.every(Boolean)) {
-        alert('Please fill all boxes before checking');
-        return;
-    }
-
+    
     const answerWords = answer.replace(/,/g, '').split(' ');
     
     // Create feedback map for the current attempt
@@ -161,6 +163,7 @@ function checkAnswer() {
     // Rest of the game logic
     if (JSON.stringify(row) === JSON.stringify(answerWords)) {
         document.getElementById('message').textContent = 'Congratulations! You Win!';
+        document.getElementById('share-btn').classList.remove('hidden');
         return;
     }
 
@@ -169,11 +172,19 @@ function checkAnswer() {
     
     if (chancesRemaining === 0) {
         document.getElementById('message').textContent = 'Game Over!';
+        document.getElementById('share-btn').classList.remove('hidden');
         return;
     }
 
     currentAttempt++;
     currentInputPosition = 0;
+
+    // Update share button when game ends (either win or lose)
+    if (JSON.stringify(row) === JSON.stringify(answerWords) || chancesRemaining === 0) {
+        const shareBtn = document.getElementById('share-btn');
+        shareBtn.classList.remove('bg-gray-300', 'cursor-not-allowed', 'opacity-50');
+        shareBtn.classList.add('bg-blue-500', 'hover:bg-blue-600');
+    }
 }
 
 // Function to reset inputs
@@ -202,24 +213,82 @@ function resetInputs() {
     // Optionally, reset the question and description
     document.getElementById('question').textContent = '';
     document.getElementById('description').textContent = '';
+
+    // Reset share button state
+    const shareBtn = document.getElementById('share-btn');
+    shareBtn.classList.remove('bg-blue-500', 'hover:bg-blue-600');
+    shareBtn.classList.add('bg-gray-300', 'cursor-not-allowed', 'opacity-50');
 }
 
-// Event listener for starting the game
-document.getElementById('start-game-btn').addEventListener('click', function() {
-    const userName = document.getElementById('name-input').value.trim();
-    if (userName) {
-        document.getElementById('welcome-message').textContent = `Welcome, ${userName}! Let's play SQL Wordle!`;
-        document.getElementById('welcome-container').style.display = 'none'; // Hide the welcome container
-        document.getElementById('game-container').style.display = 'block'; // Show the game container
-        loadLevels(); // Load levels when the game starts
-    } else {
-        alert("Name is required to play the game.");
-    }
-});
-// Add event listeners to buttons for feedback
-document.querySelectorAll('.grid button').forEach(button => {
-    button.addEventListener('click', function() {
-        buttonClickFeedback(button); // Call feedback function on click
+// Event listeners
+document.addEventListener('DOMContentLoaded', function() {
+    // Existing event listeners
+    document.getElementById('start-game-btn').addEventListener('click', function() {
+        const userName = document.getElementById('name-input').value.trim();
+        if (userName) {
+            document.getElementById('welcome-message').textContent = `Welcome, ${userName}! Let's play SQL Wordle!`;
+            document.getElementById('welcome-container').style.display = 'none';
+            document.getElementById('game-container').style.display = 'block';
+            loadLevels();
+        } else {
+            alert("Name is required to play the game.");
+        }
+    });
+
+    // Add event listener for GO button
+    document.getElementById('go-btn').addEventListener('click', checkAnswer);
+
+    // Add event listener for backspace button with debounce
+    const backspaceBtn = document.getElementById('backspace-btn');
+    let isBackspacePressed = false;
+
+    backspaceBtn.addEventListener('click', function(e) {
+        if (!isBackspacePressed) {
+            isBackspacePressed = true;
+            backspace();
+            setTimeout(() => {
+                isBackspacePressed = false;
+            }, 200); // Debounce time
+        }
+    });
+
+    // Optional: Add keyboard support for backspace
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Backspace' && !isBackspacePressed) {
+            isBackspacePressed = true;
+            backspace();
+            setTimeout(() => {
+                isBackspacePressed = false;
+            }, 200); // Debounce time
+        }
+    });
+
+    // Add event listener for reset button
+    document.getElementById('reset-btn').addEventListener('click', resetInputs);
+
+    // Add event listener for share button
+    document.getElementById('share-btn').addEventListener('click', function(e) {
+        // Only allow sharing if button is active (blue)
+        if (this.classList.contains('bg-blue-500')) {
+            const shareText = generateShareText();
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SQL-Wordle Results',
+                    text: shareText
+                }).catch(console.error);
+            } else {
+                navigator.clipboard.writeText(shareText)
+                    .then(() => {
+                        const message = document.getElementById('message');
+                        message.textContent = 'Results copied to clipboard!';
+                        setTimeout(() => {
+                            message.textContent = '';
+                        }, 2000);
+                    })
+                    .catch(console.error);
+            }
+        }
     });
 });
 
@@ -236,4 +305,34 @@ function updateOptionButtonColor(button, feedback) {
             button.classList.add('bg-red-500', 'text-white');
             break;
     }
+}
+
+function generateShareText() {
+    const gameName = "SQL-Wordle P1.0\n\n";
+    let attemptGrid = '';
+    
+    // Generate grid for each attempt
+    for (let i = 0; i <= currentAttempt; i++) {
+        const row = Array.from({ length: 5 }, (_, j) => {
+            const box = document.getElementById(`input${i + 1}-${j + 1}`);
+            if (box.classList.contains('bg-green-500')) return '🟩';
+            if (box.classList.contains('bg-yellow-500')) return '🟨';
+            if (box.classList.contains('bg-red-500')) return '⬜';
+            return '⬜';
+        });
+        attemptGrid += row.join('') + '\n';
+    }
+
+    return `${gameName}${attemptGrid}\nPlay at: [your-game-url]`;
+}
+
+// Helper function to validate position
+function isValidPosition(position, maxLength) {
+    return position >= 0 && position < maxLength;
+}
+
+// Helper function to get input box safely
+function getInputBox(attempt, position) {
+    const box = document.getElementById(`input${attempt + 1}-${position}`);
+    return box;
 }

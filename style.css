@@ -68,3 +68,12 @@
 .input-box.bg-red-500 {
   background-color: #f44336 !important; /* Use !important if necessary */
 }
+
+#share-btn {
+    margin-top: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+#share-btn:hover {
+    background-color: #3b82f6;
+}
