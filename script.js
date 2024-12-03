@@ -123,7 +123,7 @@ function checkAnswer() {
     const answerWords = answer.replace(/,/g, '').split(' ');
     const expectedLength = answerWords.length;
     
-    // Fix: Use answer length to determine number of inputs to check
+    // Fix: More reliable input collection
     const row = [];
     for (let i = 1; i <= expectedLength; i++) {
         const input = document.getElementById(`input${currentAttempt + 1}-${i}`);
@@ -131,7 +131,8 @@ function checkAnswer() {
             console.error(`Input box ${i} not found`);
             return;
         }
-        row.push(input.textContent || '');
+        const inputText = (input.textContent || input.innerText || '').trim();
+        row.push(inputText);
     }
 
     // Debug logging
@@ -149,7 +150,7 @@ function checkAnswer() {
         alert('Please fill all boxes before checking');
         return;
     }
-
+    
     // Create feedback map for the current attempt
     const feedbackMap = new Map();
     
@@ -171,14 +172,13 @@ function checkAnswer() {
         addFeedbackClass(box, feedback);
     });
 
-    // Update option buttons with feedback colors (modified part)
+    // Update option buttons with feedback colors
     document.querySelectorAll('.option-botton').forEach(button => {
         const word = button.getAttribute('data-word');
         if (feedbackMap.has(word)) {
             const newFeedback = feedbackMap.get(word);
             const currentClasses = button.classList;
             
-            // Only upgrade the feedback color if it's better than the current one
             if (
                 (newFeedback === 'correct') || 
                 (newFeedback === 'wrong-position' && !currentClasses.contains('bg-green-500')) ||
@@ -189,11 +189,10 @@ function checkAnswer() {
         }
     });
 
-    // Rest of game logic...
+    // Check win/lose conditions
     if (JSON.stringify(row) === JSON.stringify(answerWords)) {
         document.getElementById('message').textContent = 'Congratulations! You Win!';
-        document.getElementById('share-btn').classList.remove('bg-gray-300', 'cursor-not-allowed', 'opacity-50');
-        document.getElementById('share-btn').classList.add('bg-blue-500', 'hover:bg-blue-600');
+        enableShareButton('win');
         return;
     }
 
@@ -202,8 +201,7 @@ function checkAnswer() {
     
     if (chancesRemaining === 0) {
         document.getElementById('message').textContent = 'Game Over!';
-        document.getElementById('share-btn').classList.remove('bg-gray-300', 'cursor-not-allowed', 'opacity-50');
-        document.getElementById('share-btn').classList.add('bg-blue-500', 'hover:bg-blue-600');
+        enableShareButton('lose');
         return;
     }
 
@@ -260,7 +258,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Add event listener for share button
     document.getElementById('share-btn').addEventListener('click', function(e) {
-        // Only allow sharing if button is active (blue)
         if (this.classList.contains('bg-blue-500')) {
             const shareText = generateShareText();
             
@@ -273,9 +270,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 navigator.clipboard.writeText(shareText)
                     .then(() => {
                         const message = document.getElementById('message');
+                        const originalText = message.textContent;
                         message.textContent = 'Results copied to clipboard!';
                         setTimeout(() => {
-                            message.textContent = '';
+                            message.textContent = originalText;
                         }, 2000);
                     })
                     .catch(console.error);
@@ -298,27 +296,45 @@ function updateOptionButtonColor(button, feedback) {
             break;
     }
 }
+function enableShareButton(result) {
+    const shareBtn = document.getElementById('share-btn');
+    shareBtn.classList.remove('bg-gray-300', 'cursor-not-allowed', 'opacity-50');
+    shareBtn.classList.add('bg-blue-500', 'hover:bg-blue-600', 'text-white');
+    
+    // Store the game result for sharing
+    shareBtn.setAttribute('data-result', result);
+}
 
 function generateShareText() {
-    if (currentAttempt < 0) return '';
+    const result = document.getElementById('share-btn').getAttribute('data-result');
+    const question = document.getElementById('question').textContent;
     
-    const gameName = "SQL-Wordle P1.0\n\n";
-    let attemptGrid = '';
+    let shareText = `SQL-Wordle P1.0\n\n`;
+    shareText += `Question: ${question}\n\n`;
     
-    // Only show actual attempts made
-    const actualAttempts = Math.min(currentAttempt + 1, 3);
-    
-    for (let i = 0; i < actualAttempts; i++) {
-        const row = Array.from({ length: 5 }, (_, j) => {
-            const box = document.getElementById(`input${i + 1}-${j + 1}`);
-            if (!box) return '⬜';
-            if (box.classList.contains('bg-green-500')) return '🟩';
-            if (box.classList.contains('bg-yellow-500')) return '🟨';
-            if (box.classList.contains('bg-red-500')) return '⬜';
-            return '⬜';
-        });
-        attemptGrid += row.join('') + '\n';
+    // Add emoji grid for attempts
+    for (let i = 0; i <= currentAttempt; i++) {
+        const row = [];
+        for (let j = 1; j <= 5; j++) {
+            const box = document.getElementById(`input${i + 1}-${j}`);
+            if (!box) continue;
+            
+            if (box.classList.contains('bg-green-500')) {
+                row.push('🟩');
+            } else if (box.classList.contains('bg-yellow-500')) {
+                row.push('🟨');
+            } else if (box.classList.contains('bg-red-500')) {
+                row.push('⬜');
+            }
+        }
+        shareText += row.join('') + '\n';
     }
-
-    return `${gameName}${attemptGrid}\nPlay SQL-Wordle: [your-game-url]`;
+    
+    // Add result message
+    shareText += `\n${result === 'win' ? '🎉 Solved!' : '😅 Nice try!'}\n`;
+    shareText += `Attempts: ${currentAttempt + 1}/3\n\n`;
+    shareText += `Play SQL-Wordle: [your-game-url]`;
+    
+    return shareText;
 }
+
