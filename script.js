@@ -67,11 +67,15 @@ function startLevel(levelIndex) {
 
 // Function to add input from buttons
 function addToInput(value) {
-    // Get the current level's answer instead of using currentAttempt as an index
-    const currentLevel = levels[0]; // Since we start with first level
-    const answer = currentLevel.answers[0].replace(/,/g, '').split(' '); // Get the correct answer
+    if (!value || typeof value !== 'string') {
+        console.error('Invalid input value');
+        return;
+    }
     
-    if (currentInputPosition < answer.length) {
+    const currentLevel = levels[0];
+    const answer = currentLevel.answers[0].replace(/,/g, '').split(' ');
+    
+    if (currentInputPosition < answer.length && currentAttempt < 3) {
         const inputBox = document.getElementById(`input${currentAttempt + 1}-${currentInputPosition + 1}`);
         if (inputBox) {
             inputBox.textContent = value;
@@ -116,20 +120,36 @@ function addFeedbackClass(box, feedback) {
 function checkAnswer() {
     const currentLevel = levels[0];
     const answer = currentLevel.answers[0];
+    const answerWords = answer.replace(/,/g, '').split(' ');
+    const expectedLength = answerWords.length;
     
-    // Get current attempt's inputs
-    const row = Array.from({ length: 5 }, (_, i) =>
-        document.getElementById(`input${currentAttempt + 1}-${i + 1}`).textContent
-    );
+    // Fix: Use answer length to determine number of inputs to check
+    const row = [];
+    for (let i = 1; i <= expectedLength; i++) {
+        const input = document.getElementById(`input${currentAttempt + 1}-${i}`);
+        if (!input) {
+            console.error(`Input box ${i} not found`);
+            return;
+        }
+        row.push(input.textContent || '');
+    }
 
-    // Validation
-    if (row.some(input => !input || input.trim() === '')) {
+    // Debug logging
+    console.log('Expected length:', expectedLength);
+    console.log('Current inputs:', row);
+    console.log('Answer words:', answerWords);
+
+    // More robust validation
+    const hasEmptyInputs = row.some(input => {
+        const trimmed = String(input).trim();
+        return trimmed === '' || trimmed === 'undefined' || trimmed === 'null';
+    });
+
+    if (hasEmptyInputs) {
         alert('Please fill all boxes before checking');
         return;
     }
 
-    const answerWords = answer.replace(/,/g, '').split(' ');
-    
     // Create feedback map for the current attempt
     const feedbackMap = new Map();
     
@@ -280,13 +300,18 @@ function updateOptionButtonColor(button, feedback) {
 }
 
 function generateShareText() {
+    if (currentAttempt < 0) return '';
+    
     const gameName = "SQL-Wordle P1.0\n\n";
     let attemptGrid = '';
     
-    // Generate grid for each attempt
-    for (let i = 0; i <= currentAttempt; i++) {
+    // Only show actual attempts made
+    const actualAttempts = Math.min(currentAttempt + 1, 3);
+    
+    for (let i = 0; i < actualAttempts; i++) {
         const row = Array.from({ length: 5 }, (_, j) => {
             const box = document.getElementById(`input${i + 1}-${j + 1}`);
+            if (!box) return '⬜';
             if (box.classList.contains('bg-green-500')) return '🟩';
             if (box.classList.contains('bg-yellow-500')) return '🟨';
             if (box.classList.contains('bg-red-500')) return '⬜';
@@ -295,5 +320,5 @@ function generateShareText() {
         attemptGrid += row.join('') + '\n';
     }
 
-    return `${gameName}${attemptGrid}\nPlay at: [your-game-url]`;
+    return `${gameName}${attemptGrid}\nPlay SQL-Wordle: [your-game-url]`;
 }
