@@ -400,14 +400,14 @@ function generateShareText(row) {
 }
 
 // Function to submit user data
-async function submitUserData(name, attempt, finalResult) {
+async function submitUserData(name, attempt, finalResult, question) {
     try {
         const response = await fetch('https://sql-wordle-2.onrender.com/api/users', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ name, attempt, finalResult }), // Include finalResult in the request body
+            body: JSON.stringify({ name, attempt, finalResult, question }), // Include finalResult
         });
 
         if (!response.ok) {
@@ -444,7 +444,3 @@ async function fetchUsers() {
         console.error('Error fetching users:', error);
     }
 }
-
-// Example usage
-submitUserData('John Doe', { attemptNumber: 1, input: ['word1'], result: 'win' });
-fetchUsers();
