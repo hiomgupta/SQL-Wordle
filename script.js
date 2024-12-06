@@ -408,7 +408,7 @@ async function submitUserData(name, attempt, finalResult) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ name, attempt, finalResult }), // Include finalResult in the request body
+            body: JSON.stringify({ name, attempt, finalResult }),
         });
 
         if (!response.ok) {
@@ -424,7 +424,7 @@ async function submitUserData(name, attempt, finalResult) {
 
 // Function to save user attempt
 async function saveUserAttempt(name, attempt) {
-    const response = await fetch('https://your-backend-url/api/users', {
+    const response = await fetch('https://sql-wordle-2.onrender.com/api/users', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -438,7 +438,7 @@ async function saveUserAttempt(name, attempt) {
 // Function to fetch all users
 async function fetchUsers() {
     try {
-        const response = await fetch('https://your-backend-url/api/users');
+        const response = await fetch('https://sql-wordle-2.onrender.com/api/users');
         const users = await response.json();
         console.log('Fetched users:', users);
     } catch (error) {
