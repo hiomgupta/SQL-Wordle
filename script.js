@@ -403,7 +403,7 @@ function generateShareText(row) {
 // Function to submit user data
 async function submitUserData(name, attempt, finalResult) {
     try {
-        const response = await fetch('https://your-backend-url/api/users', {
+        const response = await fetch('https://sql-wordle-2.onrender.com/api/users', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
