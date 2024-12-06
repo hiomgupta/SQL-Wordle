@@ -12,52 +12,25 @@
         <h1 class="text-2xl font-bold text-center mb-4">Welcome to SQL Wordle!</h1>
         <p class="text-center mb-6">Please enter your name to start playing:</p>
         <input type="text" id="name-input" class="border border-gray-300 p-2 rounded w-full mb-4" placeholder="Enter your name" />
-        <button id="start-game-btn" class="bg-blue-500 text-white px-4 py-2 rounded w-full">Start Game</button>
+        <button id="start-game-btn" class="elevated-button">Start Game</button>
     </div>
 
     <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full hidden" id="game-container">
         <h1 class="text-2xl font-bold text-center mb-4">SQL-Wordle P1.0</h1>
         <p class="text-center mb-6" id="welcome-message"></p>
-        
         <p id="question" class="text-center mb-4 font-semibold"></p>
-
-        <div id="attempts" class="space-y-3 mb-6">
-            <!-- Input boxes will be generated dynamically -->
-        </div>
-
+        <div id="attempts" class="space-y-3 mb-6"></div>
         <p id="chances-remaining" class="text-center text-gray-700 font-semibold mb-4">Chances remaining: 3</p>
-
-        <div class="grid grid-cols-5 gap-2 mb-4" id="options-container">
-            <!-- Option buttons will be generated dynamically -->
-        </div>
-
+        <div class="grid grid-cols-5 gap-2 mb-4" id="options-container"></div>
         <div class="flex space-x-2 justify-center mb-4">
-            <button id="go-btn" class="bg-green-500 text-white px-4 py-2 rounded">GO</button>
-            <button id="backspace-btn" class="bg-gray-400 text-white px-4 py-2 rounded">Backspace</button>
-            <button id="reset-btn" class="bg-red-500 text-white px-4 py-2 rounded">RESET</button>
+            <button id="go-btn" class="elevated-button">GO</button>
+            <button id="backspace-btn" class="text-button">Backspace</button>
+            <button id="reset-btn" class="outlined-button">RESET</button>
         </div>
-
         <p id="message" class="text-center font-bold"></p>
-
-        <button 
-            id="share-btn" 
-            class="bg-gray-300 text-black px-4 py-2 rounded cursor-not-allowed opacity-50">
-            Share Results
-        </button>
+        <button id="share-btn" class="bg-gray-300 text-black px-4 py-2 rounded cursor-not-allowed opacity-50">Share Results</button>
     </div>
 
     <script src="script.js"></script>
-    <script>
-        document.getElementById('start-game-btn').addEventListener('click', function() {
-            const userName = document.getElementById('name-input').value.trim();
-            if (userName) {
-                document.getElementById('welcome-message').textContent = `Welcome, ${userName}! Let's play SQL Wordle!`;
-                document.getElementById('welcome-container').style.display = 'none'; // Hide the welcome container
-                document.getElementById('game-container').style.display = 'block'; // Show the game container
-            } else {
-                alert("Name is required to play the game.");
-            }
-        });
-    </script>
 </body>
 </html> 

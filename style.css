@@ -1,9 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+:root {
+    --my-brand-font: 'Open Sans', sans-serif;
+    --my-headline-font: 'Montserrat', sans-serif;
+    --my-title-font: 'Montserrat', sans-serif;
+    --my-plain-font: system-ui;
+
+    --md-ref-typeface-brand: var(--my-brand-font);
+    --md-ref-typeface-plain: var(--my-plain-font);
+    --md-sys-color-primary: #006A6A;
+    --md-sys-color-on-primary: #FFFFFF;
+    --md-sys-color-outline: #6F7979;
+}
+
 * {
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
-  }
-  
-  body {
+    font-family: var(--md-ref-typeface-brand);
+}
+
+body {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -11,9 +27,9 @@
     margin: 0;
     background-color: #f7f7f7;
     padding: 20px;
-  }
-  
-  .game-container {
+}
+
+.game-container {
     text-align: center;
     width: 100%;
     max-width: 300px;
@@ -25,24 +41,24 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
-  }
-  
-  .attempt-row {
+}
+
+.attempt-row {
     display: flex;
     justify-content: center;
     flex-wrap: nowrap;
     margin-bottom: 10px;
-    transition: transform 0.3s ease;
-  }
-  
-  .attempt-row.active {
-    
-    transform: scale(1.10); /* Slightly enlarge the active row */
+}
+
+
+
+.attempt-row.active {
+    transform: scale(1.10);
     z-index: 1;
     background-color: #e0f7fa;
-  }
-  
-  .attempt-row .input-box {
+}
+
+.attempt-row .input-box {
     margin: 5px;
     flex: 1 0 20%;
     min-width: 30px;
@@ -56,97 +72,58 @@
     white-space: nowrap;
     padding: 2;
     line-height: 40px;
-  }
-  
-  .attempt-row .input-box.bg-green-500 {
-    background-color: #4CAF50 !important;
-  }
-  
-  .attempt-row .input-box.bg-red-500 {
-    background-color: #f44336 !important;
-  }
-  
-  #options-container {
+}
+
+#options-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     margin-bottom: 10px;
-  }
-  
-  #options-container button {
-    margin: 5px;
-    flex: 1 1 60px;
-    min-width: 60px;
-    padding: 10px;
-    font-size: 14px;
+}
+
+.elevated-button {
+    background: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
     cursor: pointer;
-    overflow: hidden;
-    white-space: nowrap;
-  }
-  
-  #go-btn {
-    background-color: #4CAF50;
-    color: white;
-  }
-  
-  #reset-btn {
-    background-color: #f44336;
-    color: white;
-  }
-  
-  #chances-remaining {
+    transition: background 0.3s;
     font-weight: bold;
-  }
-  
-  #message {
+}
+
+.elevated-button:hover {
+    background: #005757;
+}
+
+.outlined-button {
+    background: transparent;
+    border: 2px solid var(--md-sys-color-outline);
+    color: var(--md-sys-color-primary);
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
     font-weight: bold;
-    font-size: 1.2em;
-  }
-
-
-  .bg-green-500 {
-    background-color: #4CAF50;
-}
-  .bg-red-500 {
-    background-color: #f44336; /* Adjust as needed */
-}
-  .text-white {
-    color: white;
-}
-.input-box.bg-green-500 {
-  background-color: #4CAF50 !important; /* Use !important if necessary */
-}
-.input-box.bg-red-500 {
-  background-color: #f44336 !important; /* Use !important if necessary */
 }
 
-#share-btn {
-    margin-top: 1rem;
-    transition: all 0.3s ease;
+.outlined-button:hover {
+    background: var(--md-sys-color-outline);
+    color: var(--md-sys-color-on-primary);
 }
 
-#share-btn.bg-blue-500:hover {
-    background-color: #3b82f6;
-}
-
-h1 {
-    text-align: center;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-}
-
-th, td {
-    border: 1px solid #ccc;
+.text-button {
+    background: transparent;
+    border: none;
+    color: var(--md-sys-color-primary);
     padding: 10px;
-    text-align: left;
+    cursor: pointer;
+    transition: color 0.3s;
+    font-weight: bold;
 }
 
-th {
-    background-color: #f2f2f2;
+.text-button:hover {
+    color: #004545;
 }
 
 /* Media Queries for Responsiveness */
