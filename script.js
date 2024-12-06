@@ -3,6 +3,7 @@ let currentAttempt = 0;
 let currentInputPosition = 0;
 let chancesRemaining = 3;
 let levels = []; // To store levels data
+let userName; // Declare userName globally
 
 // Function to load levels from JSON
 function loadLevels() {
@@ -123,7 +124,7 @@ function addFeedbackClass(box, feedback) {
 }
 
 // Function to check the answer
-function checkAnswer() {
+function checkAnswer(userName) {
     const currentLevel = levels[0];
     const answer = currentLevel.answers[0];
     const expectedLength = answer.replace(/,/g, '').split(' ').length; // Get expected length directly
@@ -200,10 +201,15 @@ function checkAnswer() {
     if (JSON.stringify(row) === JSON.stringify(answerWords)) {
         document.getElementById('message').textContent = 'Congratulations! You Win!';
         enableShareButton('win');
+        // Save user attempt
+        saveUserAttempt(userName, { attemptNumber: currentAttempt, input: row, result: 'win' });
         return;
+    } else {
+        chancesRemaining--;
+        // Save user attempt
+        saveUserAttempt(userName, { attemptNumber: currentAttempt, input: row, result: 'lose' });
     }
 
-    chancesRemaining--;
     document.getElementById('chances-remaining').textContent = `Chances remaining: ${chancesRemaining}`;
 
     if (chancesRemaining === 0) {
@@ -274,19 +280,21 @@ function resetInputs() {
 document.addEventListener('DOMContentLoaded', function() {
     // Existing event listeners
     document.getElementById('start-game-btn').addEventListener('click', function() {
-        const userName = document.getElementById('name-input').value.trim();
+        userName = document.getElementById('name-input').value.trim(); // Set userName when starting the game
         if (userName) {
             document.getElementById('welcome-message').textContent = `Welcome, ${userName}! Let's play SQL Wordle!`;
-            document.getElementById('welcome-container').style.display = 'none';
-            document.getElementById('game-container').style.display = 'block';
-            loadLevels();
+            document.getElementById('welcome-container').style.display = 'none'; // Hide the welcome container
+            document.getElementById('game-container').style.display = 'block'; // Show the game container
+            loadLevels(); // Load levels after starting the game
         } else {
             alert("Name is required to play the game.");
         }
     });
 
     // Add event listener for GO button
-    document.getElementById('go-btn').addEventListener('click', checkAnswer);
+    document.getElementById('go-btn').addEventListener('click', function() {
+        checkAnswer(userName); // Pass userName to checkAnswer
+    });
 
     // Add event listener for backspace button
     document.getElementById('backspace-btn').addEventListener('click', backspace);
@@ -297,8 +305,24 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add event listener for share button
     document.getElementById('share-btn').addEventListener('click', function(e) {
         if (this.classList.contains('bg-blue-500')) {
-            const shareText = generateShareText();
-            
+            const row = []; // Define row here
+            const currentLevel = levels[0]; // Get the current level
+            const answer = currentLevel.answers[0]; // Get the answer for the current level
+            const expectedLength = answer.replace(/,/g, '').split(' ').length; // Calculate expected length
+
+            for (let i = 1; i <= expectedLength; i++) {
+                const input = document.getElementById(`input${currentAttempt + 1}-${i}`);
+                if (!input) continue;
+                const inputText = (input.textContent || input.innerText || '').trim();
+                row.push(inputText);
+            }
+
+            console.log('Row:', row); // Log the row
+            console.log('Expected Length:', expectedLength); // Log expected length
+
+            const shareText = generateShareText(row); // Pass row to generateShareText
+            console.log('Share Text:', shareText); // Log the share text
+
             if (navigator.share) {
                 navigator.share({
                     title: 'SQL-Wordle Results',
@@ -343,7 +367,7 @@ function enableShareButton(result) {
     shareBtn.setAttribute('data-result', result);
 }
 
-function generateShareText() {
+function generateShareText(row) {
     const result = document.getElementById('share-btn').getAttribute('data-result');
     const question = document.getElementById('question').textContent;
     
@@ -362,7 +386,7 @@ function generateShareText() {
             } else if (box.classList.contains('bg-yellow-500')) {
                 row.push('🟨');
             } else if (box.classList.contains('bg-red-500')) {
-                row.push('⬜');
+                row.push('🟥');
             }
         }
         shareText += row.join('') + '\n';
@@ -376,3 +400,52 @@ function generateShareText() {
     return shareText;
 }
 
+// Function to submit user data
+async function submitUserData(name, attempt, finalResult) {
+    try {
+        const response = await fetch('http://127.0.0.1:5000/api/users', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name, attempt, finalResult }), // Include finalResult in the request body
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('User data saved:', data);
+    } catch (error) {
+        console.error('Error submitting user data:', error);
+    }
+}
+
+// Function to save user attempt
+async function saveUserAttempt(name, attempt) {
+    const response = await fetch('http://127.0.0.1:5000/api/users', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, attempt }),
+    });
+    const data = await response.json();
+    console.log(data);
+}
+
+// Function to fetch all users
+async function fetchUsers() {
+    try {
+        const response = await fetch('http://127.0.0.1:5000/api/users');
+        const users = await response.json();
+        console.log('Fetched users:', users);
+    } catch (error) {
+        console.error('Error fetching users:', error);
+    }
+}
+
+// Example usage
+submitUserData('John Doe', { attemptNumber: 1, input: ['word1'], result: 'win' });
+fetchUsers();
