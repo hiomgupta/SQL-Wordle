@@ -403,7 +403,7 @@ function generateShareText(row) {
 // Function to submit user data
 async function submitUserData(name, attempt, finalResult) {
     try {
-        const response = await fetch('http://127.0.0.1:5000/api/users', {
+        const response = await fetch('https://your-backend-url/api/users', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -424,7 +424,7 @@ async function submitUserData(name, attempt, finalResult) {
 
 // Function to save user attempt
 async function saveUserAttempt(name, attempt) {
-    const response = await fetch('http://127.0.0.1:5000/api/users', {
+    const response = await fetch('https://your-backend-url/api/users', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -438,7 +438,7 @@ async function saveUserAttempt(name, attempt) {
 // Function to fetch all users
 async function fetchUsers() {
     try {
-        const response = await fetch('http://127.0.0.1:5000/api/users');
+        const response = await fetch('https://your-backend-url/api/users');
         const users = await response.json();
         console.log('Fetched users:', users);
     } catch (error) {
