@@ -1,6 +1,6 @@
 async function fetchUserData() {
     try {
-        const response = await fetch('http://127.0.0.1:5000/api/users');
+        const response = await fetch('https://sql-wordle-2.onrender.com/api/users');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }

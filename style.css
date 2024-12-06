@@ -7,19 +7,24 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 80vh;
+    height: 100vh;
     margin: 0;
     background-color: #f7f7f7;
-    font-family: Arial, sans-serif;
     padding: 20px;
   }
   
   .game-container {
     text-align: center;
     width: 100%;
-    max-width: 320px;
-    padding: 20px;
+    max-width: 300px;
+    max-height: 80vh;
+    padding: 10px;
     overflow: hidden;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
   }
   
   .attempt-row {
@@ -39,9 +44,9 @@
   
   .attempt-row .input-box {
     margin: 5px;
-    flex: 1 0 51px;
-    min-width: 51px;
-    max-width: 80px;
+    flex: 1 0 20%;
+    min-width: 30px;
+    max-width: 60px;
     height: 40px;
     text-align: center;
     font-size: 14px;
@@ -49,7 +54,6 @@
     border-radius: 5px;
     overflow: hidden;
     white-space: nowrap;
-    /* text-overflow: ellipsis; */
     padding: 2;
     line-height: 40px;
   }
@@ -78,7 +82,6 @@
     cursor: pointer;
     overflow: hidden;
     white-space: nowrap;
-    /* padding: 0; */
   }
   
   #go-btn {
@@ -144,4 +147,19 @@ th, td {
 
 th {
     background-color: #f2f2f2;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 600px) {
+    .game-container {
+        max-width: 90%;
+    }
+
+    .attempt-row .input-box {
+        flex: 1 0 25%;
+    }
+
+    #options-container button {
+        flex: 1 1 45%;
+    }
 }

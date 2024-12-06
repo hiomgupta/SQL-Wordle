@@ -395,7 +395,6 @@ function generateShareText(row) {
     // Add result message
     shareText += `\n${result === 'win' ? '🎉 Solved!' : '😅 Nice try!'}\n`;
     shareText += `Attempts: ${currentAttempt + 1}/3\n\n`;
-    shareText += `Play SQL-Wordle: [your-game-url]`;
     
     return shareText;
 }
@@ -408,7 +407,7 @@ async function submitUserData(name, attempt, finalResult) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ name, attempt, finalResult }),
+            body: JSON.stringify({ name, attempt, finalResult }), // Include finalResult in the request body
         });
 
         if (!response.ok) {
