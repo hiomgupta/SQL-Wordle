@@ -142,9 +142,9 @@ function checkAnswer(userName) {
     }
 
     // Debug logging
-    console.log('Expected length:', expectedLength);
-    console.log('Current inputs:', row);
-    console.log('Answer:', answer);
+    // console.log('Expected length:', expectedLength);
+    // console.log('Current inputs:', row);
+    // console.log('Answer:', answer);
 
     // Validate inputs
     const hasEmptyInputs = row.some(input => {
@@ -317,8 +317,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 row.push(inputText);
             }
 
-            console.log('Row:', row); // Log the row
-            console.log('Expected Length:', expectedLength); // Log expected length
+            // console.log('Row:', row); // Log the row
+            // console.log('Expected Length:', expectedLength); // Log expected length
 
             const shareText = generateShareText(row); // Pass row to generateShareText
             console.log('Share Text:', shareText); // Log the share text

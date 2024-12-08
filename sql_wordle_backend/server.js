@@ -29,14 +29,15 @@
                 timestamp: { type: Date, default: Date.now }
             }
         ],
-        finalResults: [String] // Array to store final results shared by the user
+        finalResults: [String], // Array to store final results shared by the user
+        solved: { type: Boolean, default: false } // New field to indicate if the user solved the question
     });
 
     const User = mongoose.model('User', userSchema);
 
     // API Endpoints
     app.post('/api/users', async (req, res) => {
-        const { name, attempt, finalResult } = req.body;
+        const { name, attempt, finalResult, solved } = req.body;
         try {
             let user = await User.findOne({ name });
             if (!user) {
@@ -46,6 +47,7 @@
             if (finalResult) {
                 user.finalResults.push(finalResult);
             }
+            user.solved = solved;
             await user.save();
             res.status(200).json(user);
         } catch (error) {

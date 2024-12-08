@@ -10,7 +10,7 @@
                 "SELECT department_name FROM departments WHERE location_id = 1700"
             ],
             "options": [
-                "SELECT FROM employees first_name last_name WHERE ORDER BY",
+                "SELECT WHERE last_name employees ORDER BY FROM salary DESC HAVING first_name JOIN",
                 "SELECT FROM departments WHERE department_name location_id"
             ]
         }

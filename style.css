@@ -50,8 +50,6 @@ body {
     margin-bottom: 10px;
 }
 
-
-
 .attempt-row.active {
     transform: scale(1.10);
     z-index: 1;
