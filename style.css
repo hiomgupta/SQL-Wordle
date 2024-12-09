@@ -23,11 +23,13 @@ body {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    height: 100vh;
+    min-height: 100vh;
     margin: 0;
     background-color: #f7f7f7;
     padding: 20px;
     flex-wrap: wrap;
+    /* overflow: auto; */
+    /* flex-direction: column; */
 }
 
 .game-container {
@@ -170,4 +172,53 @@ body {
     #options-container button {
         flex: 1 1 45%;
     }
+}
+
+
+/* additional dashboard */
+table {
+    width: 90%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    /* display: grid; */
+    
+    overflow: scroll;
+
+    flex-wrap: wrap;
+
+}
+
+/* Header styling */
+th {
+    background-color: var(--md-sys-color-primary);
+    color: white;
+    text-align: left;
+    padding: 12px 15px;
+    font-size: 16px;
+}
+
+/* Row styling */
+td {
+    padding: 10px 15px;
+    text-align: left;
+    font-size: 14px;
+    border-bottom: 1px solid #ddd;
+    /* flex-wrap: nowrap; */
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #cfdef5;
+}
+
+/* Checkbox alignment */
+td input[type="checkbox"] {
+    display: block;
+    margin: auto;
 }
