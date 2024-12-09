@@ -11,7 +11,13 @@ function loadLevels() {
         .then(response => response.json())
         .then(data => {
             levels = data.levels; // Store the levels in a global variable
-            startLevel(0); // Start with the first level
+            // Generate a random level index within the bounds of available levels
+            const randomLevelIndex = Math.floor(Math.random() * levels.length);
+            
+            // const randomLevelIndex = Math.floor(Math.random() * 4) + 1;
+
+            // Start with the random level index
+            startLevel(randomLevelIndex);
         })
         .catch(error => console.error('Error loading levels:', error));
 }
@@ -19,9 +25,12 @@ function loadLevels() {
 // Function to start a specific level
 function startLevel(levelIndex) {
     const level = levels[levelIndex];
-    const question = level.questions[levelIndex];
-    const answer = level.answers[levelIndex];
-    const options = level.options[levelIndex].split(' ');
+    const questionIndex = Math.floor(Math.random() * level.questions.length);
+    // console.log('Random Question Index:', questionIndex);
+
+    const question = level.questions[questionIndex];
+    const answer = level.answers[questionIndex];
+    const options = level.options[questionIndex].split(' ');
 
     // Display the question
     document.getElementById('question').textContent = question;
@@ -36,22 +45,45 @@ function startLevel(levelIndex) {
     const attemptsContainer = document.getElementById('attempts');
     attemptsContainer.innerHTML = ''; // Clear previous inputs
 
+    
+
+
     for (let attempt = 0; attempt < 3; attempt++) {
+        // Create a row for each attempt
         const row = document.createElement('div');
         row.className = 'attempt-row'; // Add a class for styling
+        
         if (attempt === currentAttempt) {
             row.classList.add('active'); // Highlight the current attempt
         }
-
+    
+        // Create input boxes based on answer length
         const answerWords = answer.replace(/,/g, '').split(' '); // Split answer into words, ignoring commas
-        for (let i = 0; i < answerWords.length; i++) { // Create input boxes based on answer length
+        for (let i = 0; i < answerWords.length; i++) {
             const box = document.createElement('button');
             box.className = 'input-box'; // Use the input box class
             box.id = `input${attempt + 1}-${i + 1}`;
             row.appendChild(box);
         }
+    
         attemptsContainer.appendChild(row);
+    
+        // Add a line separator between attempts, except after the last attempt
+        if (attempt < 3) {
+            const line = document.createElement('div');
+            line.className = 'separator-line'; // Add a class for styling the line
+            attemptsContainer.appendChild(line);
+        }
+        
     }
+    
+
+
+
+
+
+
+
 
     // Set up option buttons dynamically
     const optionsContainer = document.getElementById('options-container');

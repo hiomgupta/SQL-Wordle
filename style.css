@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 :root {
-    --my-brand-font: 'Open Sans', sans-serif;
+    --my-brand-font: 'Albert Sans', sans-serif;
     --my-headline-font: 'Montserrat', sans-serif;
     --my-title-font: 'Montserrat', sans-serif;
     --my-plain-font: system-ui;
@@ -43,11 +43,28 @@ body {
     flex-direction: column;
 }
 
+.custom-line {
+    border: 0;
+    height: 2px;
+    background: #ccc; /* Light gray color */
+    margin: 10px 0; /* Adds spacing above and below */
+}
+.main-line {
+    border: 0;
+    height: 2px;
+    background: #010101; /* Light gray color */
+    margin: 10px 0; /* Adds spacing above and below */
+}
+
+
 .attempt-row {
     display: flex;
     justify-content: center;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     margin-bottom: 10px;
+    gap: 5px; /* Adds space between elements */
+
+    
 }
 
 .attempt-row.active {
@@ -78,6 +95,13 @@ body {
     justify-content: center;
     margin-bottom: 10px;
 }
+
+.separator-line {
+    height: 1px;
+    background-color: #ccc; /* Line color */
+    margin: 10px 0; /* Space around the line */
+}
+
 
 .elevated-button {
     background: var(--md-sys-color-primary);
