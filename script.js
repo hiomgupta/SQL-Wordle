@@ -12,7 +12,7 @@ function loadLevels() {
         .then(data => {
             levels = data.levels; // Store the levels in a global variable
             // Generate a random level index within the bounds of available levels
-            const randomLevelIndex = Math.floor(Math.random() * levels.length);
+            // const randomLevelIndex = Math.floor(Math.random() * levels.length);
             
             // const randomLevelIndex = Math.floor(Math.random() * 4) + 1;
 
@@ -25,12 +25,12 @@ function loadLevels() {
 // Function to start a specific level
 function startLevel(levelIndex) {
     const level = levels[levelIndex];
-    const questionIndex = Math.floor(Math.random() * level.questions.length);
+    // const questionIndex = Math.floor(Math.random() * level.questions.length);
     // console.log('Random Question Index:', questionIndex);
 
-    const question = level.questions[questionIndex];
-    const answer = level.answers[questionIndex];
-    const options = level.options[questionIndex].split(' ');
+    const question = level.questions[levelIndex];
+    const answer = level.answers[levelIndex];
+    const options = level.options[levelIndex].split(' ');
 
     // Display the question
     document.getElementById('question').textContent = question;
