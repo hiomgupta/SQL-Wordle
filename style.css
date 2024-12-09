@@ -77,7 +77,7 @@ body {
 }
 
 .attempt-row .input-box {
-    margin: 5px;
+    /* margin: 5px; */
     flex: 1 0 20%;
     min-width: 30px;
     max-width: 60px;
@@ -217,8 +217,4 @@ tr:hover {
     background-color: #cfdef5;
 }
 
-/* Checkbox alignment */
-td input[type="checkbox"] {
-    display: block;
-    margin: auto;
-}
+

@@ -17,7 +17,7 @@ function loadLevels() {
             // const randomLevelIndex = Math.floor(Math.random() * 4) + 1;
 
             // Start with the random level index
-            startLevel(randomLevelIndex);
+            startLevel(0);
         })
         .catch(error => console.error('Error loading levels:', error));
 }
@@ -77,14 +77,6 @@ function startLevel(levelIndex) {
         
     }
     
-
-
-
-
-
-
-
-
     // Set up option buttons dynamically
     const optionsContainer = document.getElementById('options-container');
     optionsContainer.innerHTML = ''; // Clear previous options
