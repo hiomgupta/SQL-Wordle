@@ -2,29 +2,20 @@
     "levels": [
         {
             "questions": [
-                "Find the names of departments located at location ID 1700.",
-                "Add a new column called 'bonus' to the employees table.",
-                "Delete the job_applicants table from the database.",      
-                "List all job titles with a minimum salary greater than $10,000.",
-                "Display employee IDs and salaries for employees in department 80, sorted by salary in descending order.",
-                "Count the number of employees in each department, showing only departments with more than 10 employees."
+                "Retrieve the first and last names of all employees.",
+                "Delete the job_applicants table from the database."
             ],
             "answers": [
-                "SELECT department_name FROM departments WHERE location_id = 1700",
-                "ALTER TABLE employees ADD (bonus NUMBER(8,2))",
-                "DROP TABLE job_applicants",
-                "SELECT job_title FROM jobs WHERE min_salary > 10000",
-                "SELECT employee_id, salary FROM employees WHERE department_id = 80 ORDER BY salary DESC",
-                "SELECT department_id, COUNT(*) FROM employees GROUP BY department_id HAVING COUNT(*) > 10"
+                "SELECT first_name, last_name FROM employees",
+                "DROP TABLE job_applicants"
             ],
             "options": [
-                "SELECT FROM departments WHERE department_name location_id COUNT(*) GROUP BY = 1700 SUM AVG",
-                "ALTER TABLE employees ADD (bonus NUMBER(8,2)) MODIFY DROP RENAME COLUMN CONSTRAINT",
-                "DROP TABLE job_applicants CASCADE RESTRICT CREATE INDEX SEQUENCE VIEW",
-                "SELECT FROM jobs WHERE job_title min_salary > 10000 < MAX MIN BETWEEN AND",
-                "SELECT employee_id salary FROM employees WHERE department_id = 80 ORDER BY DESC ASC LIMIT",
-                "SELECT department_id COUNT(*) FROM employees GROUP BY HAVING > 10 < = DISTINCT"
+                "SELECT FROM employees first_name last_name WHERE ORDER BY salary DESC HAVING JOIN",
+                "DROP TABLE job_applicants CASCADE RESTRICT CREATE INDEX SEQUENCE VIEW"
             ]
         }
     ]
 }
+
+
+
