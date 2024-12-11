@@ -10,7 +10,7 @@
                 "DROP TABLE job_applicants"
             ],
             "options": [
-                "first_name WHERE SELECT HAVING ORDER FROM BY salary employees DESC  JOIN last_name",
+                "first_name WHERE SELECT HAVING ORDER FROM BY salary employees DESC JOIN last_name",
                 "DROP TABLE job_applicants CASCADE RESTRICT CREATE INDEX SEQUENCE VIEW"
             ]
         }
