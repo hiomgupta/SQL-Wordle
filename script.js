@@ -11,12 +11,6 @@ function loadLevels() {
         .then(response => response.json())
         .then(data => {
             levels = data.levels; // Store the levels in a global variable
-            // Generate a random level index within the bounds of available levels
-            // const randomLevelIndex = Math.floor(Math.random() * levels.length);
-            
-            // const randomLevelIndex = Math.floor(Math.random() * 4) + 1;
-
-            // Start with the random level index
             startLevel(0);
         })
         .catch(error => console.error('Error loading levels:', error));
@@ -25,8 +19,6 @@ function loadLevels() {
 // Function to start a specific level
 function startLevel(levelIndex) {
     const level = levels[levelIndex];
-    // const questionIndex = Math.floor(Math.random() * level.questions.length);
-    // console.log('Random Question Index:', questionIndex);
 
     const question = level.questions[levelIndex];
     const answer = level.answers[levelIndex];
@@ -164,11 +156,6 @@ function checkAnswer(userName) {
         const inputText = (input.textContent || input.innerText || '').trim();
         row.push(inputText);
     }
-
-    // Debug logging
-    // console.log('Expected length:', expectedLength);
-    // console.log('Current inputs:', row);
-    // console.log('Answer:', answer);
 
     // Validate inputs
     const hasEmptyInputs = row.some(input => {
@@ -310,6 +297,44 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('welcome-container').style.display = 'none'; // Hide the welcome container
             document.getElementById('game-container').style.display = 'block'; // Show the game container
             loadLevels(); // Load levels after starting the game
+            
+            // Start Intro.js walkthrough
+            introJs().setOptions({
+                steps: [
+                    {
+                        intro: "Welcome to SQL Wordle! Let's take a quick tour."
+                    },
+                    {
+                        element: '#question',
+                        intro: "This is the question you need to answer."
+                    },
+                    {
+                        element: '#attempts', 
+                        intro: "Type Your Magic here!"
+                    },
+                    {
+                        element: '#options-container', 
+                        intro: "Pick & Choose Wisely from the options provided!"
+                    },
+                    {
+                        element: '#feedback-area',
+                        intro: "After submitting, you'll receive feedback: <br> 🟢 Green: correct and in the right position. <br> 🟡 Yellow: partially correct. <br> ⚪ Gray: incorrect."
+
+                    },
+                    {
+                        element: '#share-btn', 
+                        intro: "Share your results after finishing the game!"
+                    },
+                    {
+                        intro: "You are ready to go! Enjoy the game!"
+                    }
+                ],
+                showSkip: true,
+                showNext: true,
+                showPrev: true,
+                exitOnOverlayClick: false,
+                exitOnEsc: true
+            }).start();
         } else {
             alert("Name is required to play the game.");
         }
@@ -340,9 +365,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 const inputText = (input.textContent || input.innerText || '').trim();
                 row.push(inputText);
             }
-
-            // console.log('Row:', row); // Log the row
-            // console.log('Expected Length:', expectedLength); // Log expected length
 
             const shareText = generateShareText(row); // Pass row to generateShareText
             console.log('Share Text:', shareText); // Log the share text
