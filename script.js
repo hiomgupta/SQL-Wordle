@@ -318,7 +318,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     },
                     {
                         element: '#feedback-area',
-                        intro: "After submitting, you'll receive feedback: <br> 🟢 Green: correct and in the right position. <br> 🟡 Yellow: partially correct. <br> ⚪ Gray: incorrect."
+                        intro: "After submitting, you'll receive feedback: <br> 🟢 Green: correct answer and in the right position. <br> 🟡 Yellow: correct answer but at wrong position. <br> ⚪ Gray: incorrect."
 
                     },
                     {
