@@ -48,6 +48,8 @@ function startLevel(levelIndex) {
         if (attempt === currentAttempt) {
             row.classList.add('active'); // Highlight the current attempt
         }
+
+        
     
         // Create input boxes based on answer length
         const answerWords = answer.replace(/,/g, '').split(' '); // Split answer into words, ignoring commas
@@ -83,6 +85,24 @@ function startLevel(levelIndex) {
         };
         optionsContainer.appendChild(button);
     });
+
+    // Highlight the current input box
+    highlightCurrentInputBox();
+}
+
+// Function to highlight the current input box
+function highlightCurrentInputBox() {
+    // Remove active class from all input boxes
+    const allInputBoxes = document.querySelectorAll('.input-box');
+    allInputBoxes.forEach(box => {
+        box.classList.remove('active');
+    });
+
+    // Add active class to the current input box
+    const currentInputBox = document.getElementById(`input${currentAttempt + 1}-${currentInputPosition + 1}`);
+    if (currentInputBox) {
+        currentInputBox.classList.add('active');
+    }
 }
 
 // Function to add input from buttons
@@ -100,6 +120,7 @@ function addToInput(value) {
         if (inputBox) {
             inputBox.textContent = value;
             currentInputPosition++;
+            highlightCurrentInputBox(); // Highlight the next input box
         }
     }
 }
@@ -119,6 +140,7 @@ function backspace() {
         if (inputBox) {
             inputBox.textContent = '';
             currentInputPosition--;
+            highlightCurrentInputBox(); // Highlight the previous input box
         }
     }
 }

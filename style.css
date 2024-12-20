@@ -47,6 +47,10 @@ body {
     overflow-y: scroll;
 }
 
+.go-btn {
+    padding: 100px;
+}
+
 .custom-line {
     border: 0;
     height: 2px;
@@ -64,56 +68,84 @@ body {
 .attempt-row {
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
-    margin-bottom: 10px;
+    flex-wrap: nowrap;
+    /* overflow: hidden; */
+    margin-bottom: 5px;
     gap: 5px; /* Adds space between elements */
-
-    
 }
 
 .attempt-row.active {
-    transform: scale(1.10);
+    transform: scale(1.30);
     z-index: 1;
     background-color: #e0f7fa;
-    
+    /* border: 2px solid #000; Dark border for active input box */
+    border-radius: 5px; /* Optional: to match the input box style */
 }
 
 .attempt-row .input-box {
     /* margin: 5px; */
     flex: 1 0 20%;
-    min-width: 30px;
-    max-width: 60px;
-    height: 40px;
+    min-width: 20px;
+    max-width: 50px;
+    height: 30px;
     text-align: center;
-    font-size: 14px;
+    font-size: 10px;
     border: 2px solid #ccc;
     border-radius: 5px;
     overflow: hidden;
     white-space: nowrap;
     padding: 2;
-    line-height: 40px;
+    line-height: 10px;
 }
 
 #options-container {
     display: flex;
+    /* flex: 1 1 45%; */
     flex-wrap: wrap;
     justify-content: center;
     margin-bottom: 10px;
+    /* gap: 10px; */
 }
 
 #function-bottons {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: space-between;
     margin-bottom: 10px;
-    
-    /* padding: 0px; */
+    gap: 10px;
+}.icon-button {
+    width: 50px;
+    height: 50px;
+    border: none;
+    background: transparent; /* Default background */
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative; /* Required for hover effect */
 }
+
+.icon-button img {
+    width: 30%; /* Scale the image */
+    height: auto;
+    transition: opacity 0.3s ease; /* Smooth transition */
+}
+
+.icon-button:hover img {
+    opacity: 0; /* Hide the default image on hover */
+}
+
+.icon-button:hover {
+    background: url('assets/backspace_icon_hover.png') no-repeat center center;
+    background-size: contain; /* Ensure hover image fits */
+}
+
 
 .separator-line {
     height: 1px;
     background-color: #ccc; /* Line color */
-    margin: 10px 0; /* Space around the line */
+    margin: 5px 0; /* Space around the line */
 }
 
 
@@ -126,6 +158,10 @@ body {
     cursor: pointer;
     transition: background 0.3s;
     font-weight: bold;
+    flex: 1;
+    min-width: 100px;
+    height: 50px;
+    margin: 0 5px;
 }
 
 .elevated-button:hover {
@@ -136,11 +172,15 @@ body {
     background: transparent;
     border: 1px solid var(--md-sys-color-outline);
     color: var(--md-sys-color-primary);
-    padding: 10px 20px;
+    /* padding: 10px 20px; */
     border-radius: 6px;
     cursor: pointer;
     transition: background 0.3s;
     font-weight: bold;
+    flex: 1;
+    min-width: 100px;
+    height: 50px;
+    margin: 0 5px;
 }
 
 .outlined-button:hover {
@@ -220,4 +260,7 @@ tr:hover {
     background-color: #cfdef5;
 }
 
-
+.input-box.active {
+    border: 2px solid #000; /* Dark border for the active input box */
+    background-color: #e0f7fa; /* Optional: Change background color for active input */
+}
