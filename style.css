@@ -100,9 +100,8 @@ body {
 
 #options-container {
     display: flex;
-    /* flex: 1 1 45%; */
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: space-around;
     margin-bottom: 10px;
     /* gap: 10px; */
 }
@@ -258,9 +257,4 @@ tr:nth-child(even) {
 
 tr:hover {
     background-color: #cfdef5;
-}
-
-.input-box.active {
-    border: 2px solid #000; /* Dark border for the active input box */
-    background-color: #e0f7fa; /* Optional: Change background color for active input */
 }
